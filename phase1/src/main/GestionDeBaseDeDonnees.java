@@ -18,17 +18,21 @@ public class GestionDeBaseDeDonnees {
 //            createTableDept(cx);
 //            createTableEns(cx);
 /* =====================  Selection des donnees from les tableau << dept >>  ============================*/
-//            ArrayList<Departement> departements = selectdepartement(cx);
-//            System.out.println("\nles donner de departements sont suivant : \n");
-//            for (Departement departement : departements) {
-//                System.out.println(departement.toString());
-//            }
+           /*
+            ArrayList<Departement> departements = selectdepartement(cx);
+            System.out.println("\nles donner de departements sont suivant : \n");
+            for (Departement departement : departements) {
+                System.out.println(departement.toString()+"\t");
+            }
+            */
 /* ========================  Selection des donnees from les tableau << enseignant >>  ============================*/
-//            ArrayList<Enseignant> enseignants = selectenseignat(cx);
-//            System.out.println("\nles donner de l'enseignant sont suivant : \n");
-//            for (Enseignant enseignant : enseignants) {
-//                System.out.println(enseignant.toString());
-//            }
+           /*
+            ArrayList<Enseignant> enseignants = selectenseignat(cx);
+            System.out.println("\nles donner de l'enseignant sont suivant : \n");
+            for (Enseignant enseignant2 : enseignants) {
+                System.out.println(enseignant2.toString());
+            }
+            */
 
 /* ==========================  insertion des donnees dans tableau << dept val1>>  methode 1 ============================*/
 
@@ -107,21 +111,60 @@ public class GestionDeBaseDeDonnees {
             insertEns(enseignant, cx);
             */
 
-/* ==========================  delete un enseignant  par id from tableau enseignant  ============================*/
+//  ================================================== Update Ens from tab Enseignant ==================================================
 
+            /*
+            Enseignant enseignant = new Enseignant();
+            enseignant.setId(4);
+            enseignant.setNom("Moataz");
+            enseignant.setPrenom("Ahmed");
+            enseignant.setEmail("ahmed.moataz@example.com");
+            enseignant.setGrade("Etudiant");
+            updateEnseignant(enseignant, cx);
+            */
+
+            // affiche les donner pour verifier si les donner sont modifier ou non.
+
+            /*
+            ArrayList<Enseignant> enseignants1 = selectenseignat(cx);
+            System.out.println("\nles donner de l'enseignant sont suivant : \n");
+            for (Enseignant enseignant1 : enseignants1) {
+                System.out.println(enseignant1.toString());
+            }
+            */
+
+//  ================================================== Update Dept from tab Departement ==================================================
+
+            /*
+            Enseignant enseignant = new Enseignant();
+            enseignant.setId(12);
+
+            Departement departement = new Departement();
+            departement.setId(5);
+            departement.setIntitule("Marketing");
+            departement.setChef(enseignant);
+            updateDepartement(departement, cx);
+
+            // affiche les donner pour verifier si les donner sont modifier ou non.
+
+            ArrayList<Departement> departements1 = selectdepartement(cx);
+            System.out.println("\nles donner de departements sont suivant : \n");
+            for (Departement departement1 : departements1) {
+                System.out.println(departement1.toString());
+            }
+             */
+
+/* ==========================  delete un enseignant  par id from tableau enseignant  ============================*/
 
             /*
             deleteEnseignant(5, cx);
             */
 
-
 /* ==========================  delete une departement par id from tableau departement  ============================*/
 
-
+            /*
             deletedepartement(1, cx);
-
-
-
+             */
 
         } catch (SQLException e) {
             System.out.println("Bad connection");
@@ -216,6 +259,31 @@ public class GestionDeBaseDeDonnees {
             enseignants.add(enseignant);
         }
         return enseignants;
+    }
+
+    public static void updateDepartement(Departement depart, Connection cx) throws SQLException {
+        String rep = "UPDATE Departement SET intitulé = ?, IdEns = ? WHERE IdDept = ?";
+        try (PreparedStatement stmt = cx.prepareStatement(rep)) {
+            stmt.setString(1, depart.getIntitule());
+            stmt.setInt(2, depart.getChef().getId());
+            stmt.setInt(3, depart.getId());
+            stmt.executeUpdate();
+            System.out.println("Département modifié avec succès");
+        }
+    }
+
+    public static void updateEnseignant(Enseignant enseignant, Connection cx) throws SQLException {
+        String rep1 = "UPDATE Enseignant SET nom = ?, prenom = ?, email = ?, grade = ?, IdDept = ? WHERE IdEns = ?";
+        try (PreparedStatement stmt = cx.prepareStatement(rep1)) {
+            stmt.setString(1, enseignant.getNom());
+            stmt.setString(2, enseignant.getPrenom());
+            stmt.setString(3, enseignant.getEmail());
+            stmt.setString(4, enseignant.getGrade());
+            stmt.setInt(5, enseignant.getId());
+            stmt.setInt(6, enseignant.getId());
+            stmt.executeUpdate();
+            System.out.println("Enseignant modifié avec succès");
+        }
     }
 
     public static void deletedepartement(int id, Connection cx) throws SQLException {
